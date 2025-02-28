@@ -10,6 +10,10 @@ block content
             .bg-white.py-8.px-4.shadow
                 form.space-y-5
                     div
+                        label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="nombre") Tu nombre
+                        input#nombre.px-4.w-full.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu Nombre" type="text" name="nombre")
+
+                    div
                         label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="email") Tu email
                         input#email.px-4.w-full.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu Nombre" type="text" name="email")
                     
@@ -17,8 +21,12 @@ block content
                         label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="password") Tu password
                         input#password.px-4.w-full.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu Nombre" type="password" name="nombre")
                     
+                    div
+                        label.block.text-sm.uppercase.text-gray-500.mb-2.font-bold(for="repetirPassword") Repetir password
+                        input#repetirPassword.px-4.w-full.py-2.border.border-gray-300.rounded-md.placeholder-gray-400(placeholder="Tu Nombre" type="password" name="repetirPassword")
+                    
                     .flex.items-center.justify-between 
-                        a.text-gray-500.xs(href='/auth/register') ¿No tienes cuenta? Crea una
+                        a.text-gray-500.xs(href='/auth/login') ¿Ya tienes cuenta? Inicia sesión
                         a.text-gray-500.xs(href='/auth/forget-password') Olvidé mi Password
                     
-                    input(class="w-full bg-indigo-600 text-white hover:bg-indigo-700" type="submit" value="Iniciar Sesión")
+                    input(class="w-full bg-indigo-600 text-white hover:bg-indigo-700" type="submit" value="Crear cuenta")

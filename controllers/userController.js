@@ -1,9 +1,17 @@
 export const formLogin = (req, res) => {
     res.render('auth/login', {
-        authentication: true
+        page: 'Iniciar Sesión'
     })
 }
 
 export const formRegister = (req, res) => {
-    res.render('auth/register', {})
+    res.render('auth/register', {
+        page: 'Crear cuenta'
+    })
+}
+
+export const forgetPasswordForm = (req, res) => {
+    res.render('auth/forget-password', {
+        page: 'Recupera tu acceso a Bienes Raíces'
+    })
 }
