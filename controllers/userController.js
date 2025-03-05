@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import { check, validationResult } from 'express-validator'
+import { generarId } from '../helpers/tokens.js';
 
 export const formLogin = (req, res) => {
     res.render('auth/login', {
@@ -14,28 +15,63 @@ export const formRegister = (req, res) => {
 }
 
 export const register = async(req, res) => {
-    // validate
-    await check('nombre').notEmpty().withMessage('El nombre es obligatorio').run(req);
-    await check('email').isEmail().withMessage('Eso no parece un email').run(req);
-    await check('password').isLength({min: 6}).withMessage('La contraseña debe ser de al menos 6 caracteres').run(req);
-    await check('PasswordRepeated').equals('password').withMessage('Los passwords no son iguales').run(req);
+    // Validaciones
+    await check('nombre')
+        .notEmpty().withMessage('El nombre es obligatorio')
+        .run(req);
+
+    await check('email')
+        .isEmail().withMessage('Eso no parece un email')
+        .run(req);
+    
+    await check('password')
+        .isLength({min: 6}).withMessage('La contraseña debe ser de al menos 6 caracteres')
+        .run(req);
+    
+    await check('PasswordRepeated')
+        .equals(req.body.password)
+        .withMessage('Debe confirmar la contraseña')
+        .run(req);
 
     let result = validationResult(req)
 
-    return res.json({errores: result.array()})
     // Verificar que el resultado esté vacío
-    if(!result.isEmpty){
+    if(!result.isEmpty()){
         // Errores
         return res.render('auth/register', {
             pagina: 'Crear cuenta',
-            errores: result.array()
+            errores: result.array(),
+            usuario: {
+                nombre: req.body.nombre,
+                email: req.body.email
+            }
         })
     }
 
-    res.json()
+    const { nombre, email, password } = req.body;
 
-    const user = await User.create(req.body);
-    res.json(user);
+    const userExisted = await User.findOne({where: { email }});
+
+    if(userExisted) {
+        return res.render('auth/register', {
+            pagina: 'Crear cuenta',
+            errores: [{msg: 'El usuario ya está registrado'}],
+            usuario: {
+                nombre: req.body.nombre,
+                email: req.body.email
+            }
+        })
+    }
+
+    // Almacenar un usuario
+    await User.create({
+        nombre,
+        email,
+        password,
+        token: generarId()
+    })
+    
+    // Mostrar mensaje de confirmación
 }
 
 export const forgetPasswordForm = (req, res) => {

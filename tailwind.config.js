@@ -1,3 +1,13 @@
+const { plugin } = require("postcss");
+
 module.exports = {
-  content: ["./views/**/*.{pug,html}", "./dist/**/*.js"],
+  content: [
+    "./views/**/*.pug",
+    "./views/**/*.html",
+    "./dist/**/*.js"
+  ],
+  theme: {
+    extend: {},
+  },
+  plugin: [],
 };
